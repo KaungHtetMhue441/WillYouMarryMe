@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Thae Thae ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --deep-red: #c9184a;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Background Heart Animation */
+        .heart-bg {
+            position: absolute;
+            top: -10%;
+            color: rgba(255, 77, 109, 0.3);
+            font-size: 20px;
+            animation: float 6s linear infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem 2rem;
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(255, 77, 109, 0.3);
+            text-align: center;
+            z-index: 10;
+            border: 2px solid white;
+            width: 350px;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--deep-red);
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px; /* This keeps them apart initially */
+            position: relative;
+            min-height: 80px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        #yesBtn {
+            background: var(--primary-pink);
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        #noBtn {
+            background: #999;
+            color: white;
+            position: relative; /* Starts relative so it stays in the gap */
+            z-index: 999;
+            white-space: nowrap;
+        }
+
+        #message {
+            display: none;
+            color: var(--deep-red);
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div id="main-content">
+            <h1>Thae Thae, <br> Will you marry me? 💍</h1>
+            <div class="btn-group">
+                <button id="yesBtn" onclick="celebrate()">YES!</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+        <div id="message">She said YES! ❤️<br>I love you forever!</div>
+    </div>
+
+    <script>
+        // Falling hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-bg');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 400);
+
+        const noBtn = document.getElementById('noBtn');
+
+        function moveButton() {
+            // Safety margins
+            const padding = 50;
+            
+            // Calculate screen bounds
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+            // Pick a random spot
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+            // switch to 'fixed' only when she tries to click it
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // For mobile support
+            moveButton();
+        });
+
+        function celebrate() {
+            confetti({
+                particleCount: 200,
+                spread: 100,
+                origin: { y: 0.6 }
+            });
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('message').style.display = 'block';
+            noBtn.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
