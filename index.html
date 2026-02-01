@@ -10,6 +10,7 @@
     <style>
         :root {
             --primary-pink: #ff4d6d;
+            --glow-color: rgba(255, 77, 109, 0.7);
             --deep-red: #c9184a;
         }
 
@@ -25,7 +26,7 @@
             overflow: hidden;
         }
 
-        /* Background Heart Animation */
+        /* Background Hearts */
         .heart-bg {
             position: absolute;
             top: -10%;
@@ -63,19 +64,19 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px; /* This keeps them apart initially */
+            gap: 30px;
             position: relative;
             min-height: 80px;
         }
 
         button {
-            padding: 12px 30px;
+            padding: 14px 32px;
             font-size: 1.1rem;
             font-weight: 600;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         #yesBtn {
@@ -85,12 +86,25 @@
             z-index: 1;
         }
 
+        /* --- THE GLOW EFFECT --- */
+        #yesBtn:hover {
+            transform: scale(1.5);
+            background: var(--deep-red);
+            box-shadow: 0 0 20px 10px var(--glow-color);
+            animation: pulse-glow 1.5s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 15px 5px var(--glow-color); }
+            50% { box-shadow: 0 0 30px 15px var(--glow-color); }
+            100% { box-shadow: 0 0 15px 5px var(--glow-color); }
+        }
+
         #noBtn {
             background: #999;
             color: white;
-            position: relative; /* Starts relative so it stays in the gap */
+            position: relative;
             z-index: 999;
-            white-space: nowrap;
         }
 
         #message {
@@ -116,7 +130,7 @@
     </div>
 
     <script>
-        // Falling hearts
+        // Falling hearts animation
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart-bg');
@@ -130,19 +144,15 @@
 
         const noBtn = document.getElementById('noBtn');
 
+        // Logic for "No" button to run away
         function moveButton() {
-            // Safety margins
-            const padding = 50;
-            
-            // Calculate screen bounds
+            const padding = 60;
             const maxX = window.innerWidth - noBtn.offsetWidth - padding;
             const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-            // Pick a random spot
             const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
             const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
 
-            // switch to 'fixed' only when she tries to click it
             noBtn.style.position = 'fixed';
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
@@ -150,7 +160,7 @@
 
         noBtn.addEventListener('mouseover', moveButton);
         noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // For mobile support
+            e.preventDefault();
             moveButton();
         });
 
